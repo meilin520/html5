@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>拖拽Drag</title>
+    <style>
+      ul {
+        padding: 0;
+        margin: 0;
+        width: 200px;
+        height: 800px;
+      }
+      li {
+        padding: 10px;
+        border-top: 1px solid #eee;
+        list-style: none;
+      }
+
+      li:last-of-type {
+        border-bottom: 1px solid #eee;
+      }
+
+      li:hover {
+        cursor: pointer;
+        background: #eee;
+      }
+      #box1 {
+        float: left;
+        border: 1px solid green;
+      }
+      #box2 {
+        margin-left: 15px;
+        float: left;
+        border: 1px solid red;
+      }
+    </style>
+  </head>
+
+  <body>
+    <ul id="box1" ondrop="drop(event)" ondragover="allowDrop(event)"></ul>
+    <ul id="box2" ondrop="drop(event)" ondragover="allowDrop(event)"></ul>
+    <div style="clear:both"></div>
+    <script>
+      var lesson = [{id:1,name:'语文'},{id:2,name:'数学'},{id:3,name:'英语'},{id:4,name:'历史'},{id:5,name:'政治'},{id:6,name:'生物'},{id:7,name:'物理'},{id:8,name:'化学'},{id:9,name:'音乐'},{
+          id:10,name:'体育'},{id:11,name:'实践'},{id:12,name:'健康'}];
+      var box1Dom = document.getElementById("box1");
+      var html = '';
+
+      function drag(ev) {
+        ev.dataTransfer.setData("text", ev.target.id);
+        console.log(ev)
+      }
+
+      function allowDrop(ev) {
+        ev.preventDefault();
+        ev.target.style.borderTop = '2px dashed red';
+        var liDom = document.querySelectorAll("ul>li");
+        if(ev.target.id!=='box1'&&ev.target.id!=='box2'){
+          ev.target.style.borderTop = '2px dashed red';
+          liDom.forEach(function(el){
+            if(el.id!==ev.target.id){
+              el.style.borderTop = '1px solid #eee';
+            }
+          })
+        }
+      }
+
+      function drop(ev) {
+        ev.preventDefault();
+        console.log(ev,2)
+        var data = ev.dataTransfer.getData("text");
+        var dataDom = document.getElementById(data);
+        if(ev.target.id==='box1'||ev.target.id==='box2'){
+          ev.target.appendChild(dataDom);
+        }else{
+          ev.target.parentNode.insertBefore(dataDom,ev.target);
+        }
+        var liDom = document.querySelectorAll("ul>li");
+          liDom.forEach(function(el,i){
+            el.style.borderTop = '1px solid #eee';
+          })
+      }
+      // 列表插入盒子
+      lesson.forEach(function (el,index) {
+        html+=`<li id="drag${index}" draggable="true">${index+1}、${el.name}</li>`;
+      });
+      box1Dom.innerHTML = html;
+
+      // 列表项目绑定拖动事件
+      var liDom = document.querySelectorAll("#box1>li");
+      liDom.forEach(function(el){
+        el.ondragstart = drag;
+      })
+    </script>
+  </body>
+</html>
