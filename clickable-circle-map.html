@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>可点击的圆Map-Area</title>
+    <style>
+      #giraffe {
+        border: 1px solid #eee;
+        border-radius: 250px;
+      }
+      #giraffeHead:hover,
+      #giraffeNeck:hover,
+      #giraffeBody:hover {
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <img
+      id="giraffe"
+      src="/img/giraffe.jpeg"
+      width="250"
+      height="250"
+      border="0"
+      usemap="#giraffemap"
+      alt="Girafee"
+    />
+
+    <map name="giraffemap" id="giraffemap">
+      <area id="giraffeHead" shape="circle" coords="200,50,30" alt="头部" />
+      <area id="giraffeNeck" shape="rect" coords="150,70,180,155" alt="脖子" />
+      <area id="giraffeBody" shape="rect" coords="60,170,250,250" alt="身体" />
+    </map>
+    <div id="clickText"></div>
+
+    <script>
+      var areaDom = document.querySelectorAll("area");
+      var clickTextDom = document.getElementById("clickText");
+      areaDom.forEach(function (el) {
+        el.onclick = function (e) {
+            var text = '';
+          if (e.target.id === "giraffeHead") {
+            text = "头部";
+          } else if (e.target.id === "giraffeNeck") {
+            text = "脖子";
+          } else {
+            text = "身体";
+          }
+          clickTextDom.innerText = text;
+        };
+      });
+    </script>
+  </body>
+</html>
