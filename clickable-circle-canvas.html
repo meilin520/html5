@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>可点击的圆形Canvas</title>
+    <style>
+      #circle {
+        border-radius: 500px;
+        border: 1px solid #d3d3d3;
+        background: #ffffff;
+      }
+      #text {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>请抚摸我的脸</h3>
+    <canvas id="circle" width="500" height="500">
+      您的浏览器不支持Canvas
+    </canvas>
+    <div id="location"></div>
+    <div id="text"></div>
+    <script>
+      var c = document.getElementById("circle");
+      var ctx = c.getContext("2d");
+      var img = document.createElement("img");
+      var textDom = document.getElementById("text");
+      var locationDom = document.getElementById("location");
+      var eyeCircle = [223, 153, 20]; // 眼睛的位置
+      var noseCircle = [384, 247, 30]; // 鼻子的位置
+
+      // 获取两点之间的距离
+      function twoPointDist(x1, y1, x2, y2) {
+        return Math.round(
+          Math.sqrt(
+            Math.pow(Math.abs(x1 - x2), 2) + Math.pow(Math.abs(y1 - y2), 2)
+          )
+        );
+      }
+
+      // 判断是否在圆内
+      function insideCircle(x, y, x1, y1, r) {
+        return twoPointDist(x, y, x1, y1) <= r;
+      }
+
+      // 绘制图片
+      img.src = "/img/giraffe.jpeg";
+      img.onload = function () {
+        ctx.drawImage(img, 450, 20, 350, 350, 0, 0, 500, 500);
+      };
+
+      // Cancas点击事件
+      circle.onclick = function (e) {
+        var x = e.offsetX,
+          y = e.offsetY,
+          text = "";
+        locationDom.innerText = "当前点击的坐标是：" + x + "," + y; // 输出当前点击坐标
+        if (insideCircle(x, y, eyeCircle[0], eyeCircle[1], eyeCircle[2])) {
+          text = "该死！你点到我眼睛了!";
+        }
+        if (insideCircle(x, y, noseCircle[0], noseCircle[1], noseCircle[2])) {
+          text = "喂喂，没法喘气了都, 快手拿开！";
+        }
+        textDom.innerText = text;
+      };
+    </script>
+  </body>
+</html>
