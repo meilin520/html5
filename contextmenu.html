@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鼠标右键操作</title>
+    <style>
+        #menu{
+            width: 80px;
+            height: 100px;
+            cursor: pointer;
+            position: absolute;
+            z-index: 100;
+            box-shadow: 2px 0 5px gray;
+            visibility: hidden;
+            background-color: #fff;
+        }
+        #menu .title{
+            text-align: center;
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+            padding: 4px;
+            border-bottom: 1px solid #bbb;
+            background-color: rgb(81, 172, 233);
+        }
+        #menu ul{
+            padding: 0;
+            margin: 0;
+        }
+        #menu ul li{
+            padding: 5px;
+            text-align: center;
+            list-style: none;
+        }
+        #menu ul li:hover {
+            background-color: #eee;
+        }
+        .active {
+            visibility: visible !important;
+        }
+        #list {
+            display: inline-block;
+            width: auto;
+        }
+        #list ol {
+            padding: 0;
+            margin: 0;
+        }
+        #list ol li {
+            list-style: none;
+            cursor: pointer;
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+    <h3>鼠标右键菜单演示</h3>
+    <div id="list">
+        <ol>
+            <li>1、标题一</li>
+            <li>2、标题二</li>
+            <li>3、标题三</li>
+        </ol>
+    </div>
+    <div id="menu">
+        <div class="title">标题</div>
+        <ul>
+            <li>菜单一</li>
+            <li>菜单二</li>
+        </ul>
+    </div>
+    <script>
+        const menu = document.getElementById("menu");
+        const list = document.getElementById("list");
+        window.oncontextmenu = function(e){
+            if(!e.target.contains(list)){
+                e.preventDefault();
+                var text = e.target.innerText.split('、')[1];
+                menu.getElementsByClassName('title')[0].innerText = text;
+                menu.classList.add('active');
+                menu.style.left = (e.clientX+10)+'px';
+                menu.style.top = (e.clientY+10)+'px';
+            }else{
+                menu.classList.remove('active');
+            }
+        }
+        menu.onclick = function(e){
+            alert(e.target.innerText)
+        }
+        window.addEventListener("click", function(e){
+            menu.classList.remove('active');
+        })
+        window.onunload = function(e){
+            alert('退出')
+            e.preventDefault();
+            return;
+        }
+    </script>
+</body>
+</html>
